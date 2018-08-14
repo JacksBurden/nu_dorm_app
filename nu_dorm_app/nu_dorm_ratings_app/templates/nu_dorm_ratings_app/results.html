@@ -1,0 +1,11 @@
+<h1>Search Results</h1>
+
+{% if dorms %}
+<ol>
+    {% for dorm in dorms %}
+        <li>{{ dorm.name }}</li>
+    {% endfor %}
+</ol>
+{% else %}
+    <p style="font-size: 1.5rem">No results found matching your search criteria. Please refine your criteria and try again.</p>
+{% endif %}

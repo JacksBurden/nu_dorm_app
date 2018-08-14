@@ -32,6 +32,9 @@ class User(models.Model):
     description = models.CharField(max_length=255, null=True)
     cleanliness = models.CharField(max_length=1, choices=cleanliness_choices, default=average)
 
+    def __str__(self):
+        return self.name
+
 
 
 class Dorm(models.Model):
@@ -47,8 +50,11 @@ class Dorm(models.Model):
     kitchen = models.BooleanField(default=False)
     dining_hall = models.BooleanField(default=False)
     gym = models.BooleanField(default=False)
-    picture = models.ImageField()
+    picture = models.ImageField(null=True)
     price_type = models.CharField(max_length=2, choices=price_types, default=standard)
+
+    def __str__(self):
+        return self.name
 
 
 class Rating(models.Model):
