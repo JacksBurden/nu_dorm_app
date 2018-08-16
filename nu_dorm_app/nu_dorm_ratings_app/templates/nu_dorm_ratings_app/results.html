@@ -3,7 +3,8 @@
 {% if dorms %}
 <ol>
     {% for dorm in dorms %}
-        <li>{{ dorm.name }}</li>
+        <li>{{ dorm.name }} <a href="{% url 'nu_dorm_ratings_app:dorm' dorm.id %}">View Dorm and Ratings</a>
+        <a href="{% url 'nu_dorm_ratings_app:rate' dorm.id %}">Rate Dorm</a></li>
     {% endfor %}
 </ol>
 {% else %}

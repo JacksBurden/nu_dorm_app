@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User as AuthUser
 
 # Create your models here.
 
@@ -68,7 +69,7 @@ class Rating(models.Model):
                 (three_stars, 'Three Stars'), (four_stars, 'Four Stars'),
                     (five_stars, 'Five Stars'))
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(AuthUser, on_delete=models.SET_NULL, null=True)
     dorm = models.ForeignKey(Dorm, on_delete=models.CASCADE)
     rating = models.CharField(max_length=1, choices=ratings, default=three_stars)
     review = models.CharField(max_length=10000, null=True)

@@ -1,0 +1,20 @@
+<h1>Leave a rating for {{ dorm.name }}!</h1>
+
+<form id="rating-form" action="{% url 'nu_dorm_ratings_app:submit_rating' dorm.id %}" method="post">
+    {% csrf_token %}
+    <label for="rating">Rating Out of 5</label>
+    <select name="rating" id="rating-select" form="rating-form">
+        <option value=''>Select a rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <label for="review">Additional Review (Optional)</label>
+    <input type="text" name="review" id="review-id"/>
+    {% if error %}
+        <span style="color:red;">The rating field is required.</span>
+    {% endif %}
+    <button type="submit" for="rating-form">Submit rating</button>
+</form>

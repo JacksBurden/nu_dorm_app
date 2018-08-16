@@ -1,22 +1,64 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import User, Dorm, Rating
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
+from .models import Dorm, Rating
 
 # Create your views here.
-def index(request):
-    return HttpResponse("Hello, world. This is about to be the best fuckin app.")
 
 def search(request):
     return render(request, 'nu_dorm_ratings_app/search.html')
 
-def rate(request, dorm_id):
-    return HttpResponse("Rate")
 
-def dorm(request, dorm_id):
-    return HttpResponse("Dorm")
+def index(request):
+    if request.user.is_authenticated:
+        return redirect('/nu_dorm_ratings_app/search/')
+    else:
+        return render(request, 'nu_dorm_ratings_app/login.html')
+
+def login(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        auth_login(request, user)
+        return redirect('/nu_dorm_ratings_app/search/')
+    else:
+        return redirect('/nu_dorm_ratings_app/')
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/nu_dorm_ratings_app/')
+
+
+class DormView(generic.DetailView):
+    model = Dorm
+    template_name = 'nu_dorm_ratings_app/dorm.html'
+
+
+def rate(request, dorm_id):
+    dorm = get_object_or_404(Dorm, pk=dorm_id)
+
+    return render(request, 'nu_dorm_ratings_app/rate.html', {'dorm': dorm })
+
+def submit_rating(request, dorm_id):
+    rating = request.POST.get('rating', False)
+    review = request.POST.get('review', False)
+    dorm = get_object_or_404(Dorm, pk=dorm_id)
+    if rating:
+        user = get_object_or_404(User, pk=request.user.id)
+        print(user)
+        rating_row = Rating(dorm=dorm, user=user, rating=rating, review=review or '')
+        rating_row.save()
+        return HttpResponseRedirect(reverse('nu_dorm_ratings_app:dorm', args=(dorm_id)))
+    else:
+        return redirect('/nu_dorm_ratings_app/rate/' + dorm_id + '/')
+
 
 def results(request):
     name = request.POST.get('name', '')
@@ -35,7 +77,7 @@ def results(request):
     if gym:
         dorms = dorms.exclude(gym=False)
     if price_type:
-        dorms = dorms.exclude(price_type=False)
+        dorms = dorms.filter(price_type=price_type)
 
     context = {'dorms': dorms }
     return render(request, 'nu_dorm_ratings_app/results.html', context)

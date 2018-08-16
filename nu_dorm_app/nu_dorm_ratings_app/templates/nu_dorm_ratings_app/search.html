@@ -1,4 +1,7 @@
 <h1>Search for your ideal dorms based on specific criteria</h1>
+<form action="{% url 'nu_dorm_ratings_app:logout' %}" style="float:right">
+    <button type="submit">Logout</button>
+</form>
 
 <form id="dorm-search-form" autocomplete="off" action="{% url 'nu_dorm_ratings_app:results' %}" method="post">
     {% csrf_token %}
@@ -25,7 +28,8 @@
   <div style="display: block; margin-bottom: 10px">
       <label for="price_type">Price Type</label>
       <select name="price_type" form="dorm-search-form">
-          <option value='Eh'>Enhanced</option>
+          <option value=''>Select a price type</option>
+          <option value='EH'>Enhanced</option>
           <option value='S'>Standard</option>
           <option value='E'>Economy</option>
       </select>
