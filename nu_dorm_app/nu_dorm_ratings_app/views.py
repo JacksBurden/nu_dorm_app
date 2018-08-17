@@ -36,9 +36,19 @@ def logout(request):
     return redirect('/nu_dorm_ratings_app/')
 
 
-class DormView(generic.DetailView):
-    model = Dorm
-    template_name = 'nu_dorm_ratings_app/dorm.html'
+def dorm(request, dorm_id):
+    dorm = get_object_or_404(Dorm, pk=dorm_id)
+    ratings = Rating.objects.filter(dorm_id=dorm_id)
+    avg_rating = "Not Yet Rated"
+    if len(ratings):
+        avg_rating = 0
+        count = 0
+        for rating in ratings:
+            count += float(rating.rating)
+        avg_rating = round(count / len(ratings), 2)
+    reviews = ratings.exclude(review="")[:10]
+    context = { 'dorm': dorm, 'reviews': reviews, 'avg_rating': avg_rating }
+    return render(request, 'nu_dorm_ratings_app/dorm.html', context)
 
 
 def rate(request, dorm_id):

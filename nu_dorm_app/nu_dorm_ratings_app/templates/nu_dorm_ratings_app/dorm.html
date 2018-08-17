@@ -1,1 +1,27 @@
-<h1>{{ dorm.name }}</h1>
+{% extends "base.html" %}
+{% block content %}
+<div class="container pt-5">
+    <h1 class="text-center mb-2">{{ dorm.name }}</h1>
+    <img class="img-fluid" src="{{ dorm.picture }}" alt="{{ dorm.name }}"/>
+    <div class="jumbotron">
+        <h4>Address: {{ dorm.address }}</h4>
+        <h4>Air Conditioning: {{ dorm.air_conditioning }}</h4>
+        <h4>Kitchens: {{ dorm.kitchen }}</h4>
+        <h4>Gym: {{ dorm.gym }}</h4>
+        <h4>Dining Hall: {{ dorm.dining_hall }}</h4>
+        <h3>Average User Rating: {{ avg_rating }}</h3>
+    </div>
+    {% if reviews %}
+        <h2>User Reviews</h2>
+        <ul class="list-group">
+          {% for review in reviews %}
+              <li class="list-group-item">
+                <div>User: {{ review.user.username }} <br/>Rating: {{ review.rating }} <br/>
+                  Review: {{ review.review }}</div>
+              </li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+<a class="btn btn-primary btn-lg mt-5 ml-5" href="{% url 'nu_dorm_ratings_app:search' %}" >Back to Search</a>
+</div>
+{% endblock %}

@@ -1,9 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+<h1 class="text-center my-5" style="color:red">Northeastern Dorms Rating App</h1>
 <form id="login-form" action="{% url 'nu_dorm_ratings_app:login' %}" method="post">
     {% csrf_token %}
-    <input name="username" id="username-input">Username</input>
-    <input name="password" id="password-input" type="password">Password</input>
-    <button type="submit" for="login-form">Log In</button>
+    <div class="form-group">
+    <label for="username">Username</label>
+    <input class="form-control" name="username" id="username-input"/>
+    <label for="password">Password</label>
+    <input class="form-control" name="password" id="password-input" type="password"/>
+    <button class="btn btn-danger my-4" type="submit" for="login-form">Log In</button>
 </form>
 {% if error %}
     <span style="color:red;" >The credentials you entered were incorrect. <br/> Please try again.</span>
 {% endif %}
+</div>
+{% endblock %}
