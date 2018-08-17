@@ -2,8 +2,8 @@
 {% block content %}
 <div class="container pt-5">
     <h1 class="text-center mb-2">{{ dorm.name }}</h1>
-    <img class="img-fluid" src="{{ dorm.picture }}" alt="{{ dorm.name }}"/>
-    <div class="jumbotron">
+    <div class="jumbotron" style="padding-left:30%">
+      <img class="mb-2" height="200" style="margin-left: 100px" src="{{ dorm.picture }}" alt="{{ dorm.name }}"/>
         <h4>Address: {{ dorm.address }}</h4>
         <h4>Air Conditioning: {{ dorm.air_conditioning }}</h4>
         <h4>Kitchens: {{ dorm.kitchen }}</h4>

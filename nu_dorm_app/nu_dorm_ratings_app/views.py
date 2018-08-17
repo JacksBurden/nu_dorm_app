@@ -11,16 +11,19 @@ from .models import Dorm, Rating
 
 # Create your views here.
 
+# Returns a search form for the user to fill out.
 def search(request):
     return render(request, 'nu_dorm_ratings_app/search.html')
 
 
+# Basic index login route
 def index(request):
     if request.user.is_authenticated:
         return redirect('/nu_dorm_ratings_app/search/')
     else:
         return render(request, 'nu_dorm_ratings_app/login.html')
 
+# The route for login authenication
 def login(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
@@ -31,11 +34,13 @@ def login(request):
     else:
         return redirect('/nu_dorm_ratings_app/')
 
+# Logout route
 def logout(request):
     auth_logout(request)
     return redirect('/nu_dorm_ratings_app/')
 
 
+# Route for viewing a dorm and all of its related info and ratings
 def dorm(request, dorm_id):
     dorm = get_object_or_404(Dorm, pk=dorm_id)
     ratings = Rating.objects.filter(dorm_id=dorm_id)
@@ -47,15 +52,17 @@ def dorm(request, dorm_id):
             count += float(rating.rating)
         avg_rating = round(count / len(ratings), 2)
     reviews = ratings.exclude(review="")[:10]
+
     context = { 'dorm': dorm, 'reviews': reviews, 'avg_rating': avg_rating }
     return render(request, 'nu_dorm_ratings_app/dorm.html', context)
 
-
+# Shows a dorm rating form to the user
 def rate(request, dorm_id):
     dorm = get_object_or_404(Dorm, pk=dorm_id)
 
     return render(request, 'nu_dorm_ratings_app/rate.html', {'dorm': dorm })
 
+# Endpoint for submitting a rating on a dorm
 def submit_rating(request, dorm_id):
     rating = request.POST.get('rating', False)
     review = request.POST.get('review', False)
@@ -69,7 +76,7 @@ def submit_rating(request, dorm_id):
     else:
         return redirect('/nu_dorm_ratings_app/rate/' + dorm_id + '/')
 
-
+# Search results endpoint
 def results(request):
     name = request.POST.get('name', '')
     kitchen = request.POST.get('kitchen', False)

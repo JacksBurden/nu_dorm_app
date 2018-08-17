@@ -6,6 +6,7 @@ from django.contrib.auth.models import User as AuthUser
 
 # Create your models here.
 
+# User Model
 class User(models.Model):
     # Enums for gender
     male = 'M'
@@ -37,7 +38,7 @@ class User(models.Model):
         return self.name
 
 
-
+# Model representing a Northeastern Dorm
 class Dorm(models.Model):
 
     standard = 'S'
@@ -57,7 +58,7 @@ class Dorm(models.Model):
     def __str__(self):
         return self.name
 
-
+# Model representing a user rating of a dorm
 class Rating(models.Model):
     one_star = '1';
     two_stars = '2'

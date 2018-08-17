@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'nu_dorm_ratings_db',
         'USER': 'root',
         'HOST': 'localhost',
-        'PASSWORD': 'Tdcskate100$',
+        'PASSWORD': '',
         'PORT': '3306'
 
     }
